@@ -22,51 +22,39 @@
     Institute:   Ruhr-Universitaet Bochum
                  Institut fuer Neuroinformatik
 
-    File:        SparseData.cpp
+    File:        KernelSGD.fwd.h
 
     Maintainer:  aydin demircioglu
     Email:       aydin.demircioglu@ini.rub.de
     Date:        2015 01 20
 
-    Description: Source file for the class cShark::SparseData.
+    Description: Forward declaration file for the class cShark::KernelSGD.
 
     Credits:
 
 ======================================================================================================================*/
 
+#ifndef C_SHARK_KERNEL_SGD_FWD_H
+#define C_SHARK_KERNEL_SGD_FWD_H
+
+// CEDAR CONFIGURATION
+#include "cedar/configuration.h"
+
 // CEDAR INCLUDES
-#include "SparseDataPlugin.h"
 
-// !!!!!!!!!!!!! IMPORT ORDER IS IMPORTANT HERE !!!!
-#include <boost/foreach.hpp>
-#include <QObject>
-
-
-#include <cedar/processing/ElementDeclaration.h>
+// SYSTEM INCLUDES
+#ifndef Q_MOC_RUN
+  #include <boost/smart_ptr.hpp>
+#endif // Q_MOC_RUN
 
 
-#include "SparseData.h"
-
-
-using namespace cShark;
-
-
-void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
+namespace cShark
 {
-	cedar::proc::ElementDeclarationPtr SparseDataDeclaration
-	(
-		new cedar::proc::ElementDeclarationTemplate
-		<
-		SparseData
-		>
-		(
-			"cShark"
-		)
-	);
-	
-//	declaration->setIconPath(":/steps/gauss_input.svg");
-	SparseDataDeclaration->setDescription("Read a Sparse Data File (a.k.a. LIBSVM format).");
-	
-	plugin->add(SparseDataDeclaration);
+  //!@cond SKIPPED_DOCUMENTATION
+  class KernelSGD;
+  //!@endcond
 }
+
+
+#endif // C_SHARK_KERNEL_SGD_FWD_H
 
