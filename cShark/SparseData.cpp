@@ -45,6 +45,9 @@
 
 // SYSTEM INCLUDES
 
+using namespace shark;
+
+
 //----------------------------------------------------------------------------------------------------------------------
 // constructors and destructor
 //----------------------------------------------------------------------------------------------------------------------
@@ -59,6 +62,18 @@ mOutput(new cedar::aux::MatData(cv::Mat()))
   this->declareOutput("output", mOutput);
 
   input->setCheck(cedar::proc::typecheck::IsMatrix());
+  
+  // a learning machine has data
+  LabeledData<RealVector, unsigned int> trainingData;
+  
+  // the data has some labeling order  we also need to consider
+  LabelOrder labelOrder;
+  
+  //FIXME 
+  // reading the data will simultaneously normalize the labels.
+  std::string trainingDataPath = "../test/data/australian.sparse";
+  trainingData = sparseDataHandler.importData(trainingDataPath, labelOrder);
+  cedar::aux::LogSingleton::getInstance()->debugMessage ("Loading..");
 }
 
 //----------------------------------------------------------------------------------------------------------------------

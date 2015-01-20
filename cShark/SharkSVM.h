@@ -35,8 +35,6 @@
 #ifndef SHARK_SHARKSVM_H
 #define SHARK_SHARKSVM_H
 
-#include "SharkSVMConfig.h"
-
 #include <shark/Core/Exception.h>
 
 #include <sstream>

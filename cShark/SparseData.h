@@ -54,6 +54,8 @@
 // SYSTEM INCLUDES
 
 
+using namespace shark;
+
 /*!@todo describe.
  *
  * @todo describe more.
@@ -110,8 +112,9 @@ protected:
   // none yet
 
 private:
-  // none yet
-
+	// data handler
+	SparseDataModel<RealVector> sparseDataHandler;
+	
 }; // class cShark::SparseData
 
 #endif // C_SHARK_SPARSE_DATA_H
