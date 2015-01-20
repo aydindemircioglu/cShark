@@ -43,6 +43,8 @@
 // CEDAR INCLUDES
 #include <cedar/processing/Step.h>
 #include <cedar/processing/InputSlotHelper.h>
+
+#include <cedar/auxiliaries/FileParameter.h>
 #include <cedar/auxiliaries/MatData.h>
 
 // SHARK THINGS
@@ -85,13 +87,16 @@ public:
 protected:
   // none yet
 
-  //--------------------------------------------------------------------------------------------------------------------
-  // private methods
-  //--------------------------------------------------------------------------------------------------------------------
-private:
-  void inputConnectionChanged(const std::string& inputName);
 
-  void compute(const cedar::proc::Arguments& arguments);
+private:
+	
+	void updateFilename();
+	
+	
+	void inputConnectionChanged(const std::string& inputName);
+
+	
+	void compute(const cedar::proc::Arguments& arguments);
 
   //--------------------------------------------------------------------------------------------------------------------
   // members
@@ -114,6 +119,10 @@ protected:
 private:
 	// data handler
 	SparseDataModel<RealVector> sparseDataHandler;
+
+	//!@brief determines the filename from which currently is read
+	cedar::aux::FileParameterPtr mFilename;
+	
 	
 }; // class cShark::SparseData
 

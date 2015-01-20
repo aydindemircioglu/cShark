@@ -47,12 +47,13 @@
 
 #include "SparseData.h"
 
+
 using namespace cShark;
 
 
 void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
 {
-	cedar::proc::ElementDeclarationPtr summation_decl
+	cedar::proc::ElementDeclarationPtr SparseDataDeclaration
 	(
 		new cedar::proc::ElementDeclarationTemplate
 		<
@@ -62,6 +63,10 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
 			"cShark"
 		)
 	);
-	plugin->add(summation_decl);
+	
+//	declaration->setIconPath(":/steps/gauss_input.svg");
+	SparseDataDeclaration->setDescription("Read a Sparse Data File (a.k.a. LIBSVM format).");
+	
+	plugin->add(SparseDataDeclaration);
 }
 

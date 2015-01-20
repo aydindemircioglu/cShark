@@ -55,30 +55,37 @@ using namespace shark;
 cShark::SparseData::SparseData()
 :
 // outputs
-mOutput(new cedar::aux::MatData(cv::Mat()))
+mOutput(new cedar::aux::MatData(cv::Mat())),
+mFilename(new cedar::aux::FileParameter(this, "Filename", cedar::aux::FileParameter::READ, "none"))
 {
-  // declare all data
-  cedar::proc::DataSlotPtr input = this->declareInput("input");
-  this->declareOutput("output", mOutput);
+	// declare all data
+	cedar::proc::DataSlotPtr input = this->declareInput("input");
+	this->declareOutput("output", mOutput);
 
-  input->setCheck(cedar::proc::typecheck::IsMatrix());
+	// do all connections
+	QObject::connect(mFilename.get(), SIGNAL(valueChanged()), this, SLOT(updateFilename()));
   
-  // a learning machine has data
-  LabeledData<RealVector, unsigned int> trainingData;
-  
-  // the data has some labeling order  we also need to consider
-  LabelOrder labelOrder;
-  
-  //FIXME 
-  // reading the data will simultaneously normalize the labels.
-  std::string trainingDataPath = "../test/data/australian.sparse";
-  trainingData = sparseDataHandler.importData(trainingDataPath, labelOrder);
-  cedar::aux::LogSingleton::getInstance()->debugMessage ("Loading..");
+	input->setCheck(cedar::proc::typecheck::IsMatrix());
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-// methods
-//----------------------------------------------------------------------------------------------------------------------
+
+
+void cShark::SparseData::updateFilename () 
+{
+	cedar::aux::LogSingleton::getInstance()->debugMessage ("Changing file name of data..");
+
+	// a learning machine has data
+	LabeledData<RealVector, unsigned int> trainingData;
+	
+	// the data has some labeling order  we also need to consider
+	LabelOrder labelOrder;
+
+	// change filename
+	std::string trainingDataPath = mFilename->getPath();
+	trainingData = sparseDataHandler.importData(trainingDataPath, labelOrder);
+}
+
+
 
 void cShark::SparseData::inputConnectionChanged(const std::string& inputName)
 {

@@ -50,3 +50,7 @@ cedar_project_add_target(
 
 set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmakeModules)
 find_package (Shark REQUIRED)
+find_package (Boost COMPONENTS filesystem program_options regex serialization system thread unit_test_framework REQUIRED)
+
+target_link_libraries (cShark ${Boost_LIBRARIES}  ${SHARK_LIBRARIES})
+
