@@ -134,11 +134,15 @@ public:
 	
 
 	
-	void oneStep () {
+	void oneStep (RealVector v) {
+		// take the input
+		// update model
+		cedar::aux::LogSingleton::getInstance()->message( "Taking one step..", "SharkKernelSGDOnlineTrainer");
 	}
 
 
 	void finializeModel () {
+		cedar::aux::LogSingleton::getInstance()->message("Finalizing model..", "SharkKernelSGDOnlineTrainer");
 	}
 
 	

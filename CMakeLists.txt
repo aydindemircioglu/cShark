@@ -43,8 +43,8 @@ cedar_project_add_target(
                          LIBRARY cShark # use this if you want to compile a library
                          #EXECUTABLE folder # use this if you want to compile an executable
                          TARGET_NAME cShark # if you leave this out, it will be the same as the folder
-                         #MOC_HEADERS # specify this and a list of moc headers below if you have any
-                         #path/to/moc.h # relative to folder
+                         MOC_HEADERS # specify this and a list of moc headers below if you have any
+                         KernelSGD.h SparseData.h #path/to/moc.h # relative to folder
                          #DEPENDS_ON OtherTargetNames # specify if this target depends on others 
                          )
 

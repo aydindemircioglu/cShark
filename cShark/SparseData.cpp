@@ -130,7 +130,4 @@ void cShark::SparseData::compute(const cedar::proc::Arguments& arguments)
 	if (mCurrentPoint >= mTrainingData.numberOfElements()) {
 		mCurrentPoint = 0;
 	}
-	
 }
-
-

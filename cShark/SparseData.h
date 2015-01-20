@@ -65,6 +65,7 @@ using namespace shark;
  */
 class cShark::SparseData : public cedar::proc::Step
 {
+	Q_OBJECT
 	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
 	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 	
@@ -92,16 +93,18 @@ protected:
   // none yet
 
 
-private:
-	
-	void updateFilename();
-	
+private:	
 	
 	void inputConnectionChanged(const std::string& inputName);
 
 	
 	void compute(const cedar::proc::Arguments& arguments);
 
+
+public slots: 
+	void updateFilename();
+
+	
   //--------------------------------------------------------------------------------------------------------------------
   // members
   //--------------------------------------------------------------------------------------------------------------------

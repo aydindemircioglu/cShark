@@ -53,45 +53,41 @@ using namespace shark;
 //----------------------------------------------------------------------------------------------------------------------
 
 
-cedar::aux::BoolParameter mOffset;
-cedar::aux::DoubleParameter mLambda;
-cedar::aux::IntParameter mEpochs;
-cedar::aux::IntParameter mCacheSize;
-shark::KernelSGDOnlineTrainer<RealVector> *mKernelSGDTrainer;
-GaussianRbfKernel<> kernel;
-HingeLoss loss;
-
-
 
 cShark::KernelSGD::KernelSGD():
 	//TODO:mKernelType(new cedar::aux::X),
 	//TODO:mLossType(new cedar::aux::X )
 	mOffset(new cedar::aux::BoolParameter(this, "Use Offset", false)),
 	mLambda(new cedar::aux::DoubleParameter(this, "Lambda", 1.0, cedar::aux::DoubleParameter::LimitType::positive())),
-	mEpochs(new cedar::aux::IntParameter(this, "Epochs", 1, cedar::aux::IntParameter::LimitType::fromLower(1)))
-//	mCacheSize(new cedar::aux::IntParameter(this, "Cache Size in MB", 1, cedar::aux::IntParameter::LimitType::fromLower(1)))
+	mEpochs(new cedar::aux::IntParameter(this, "Epochs", 1, cedar::aux::IntParameter::LimitType::fromLower(1))),
+	mOutput(new CedarRealVector())
+	//	mCacheSize(new cedar::aux::IntParameter(this, "Cache Size in MB", 1, cedar::aux::IntParameter::LimitType::fromLower(1)))
 //mOutput(new cedar::aux::MatData(cv::Mat())),
 {
+	cedar::aux::LogSingleton::getInstance()->message("Constructing Kernel SGD..", "SharkKernelSGDOnlineTrainer");
+
 	// declare all data
 	cedar::proc::DataSlotPtr input = this->declareInput("input");
 	this->declareOutput("output", mOutput);
-
+	
 	// do all connections
-	QObject::connect(mCacheSize.get(), SIGNAL(valueChanged()), this, SLOT(reinitializeKernelSGD()));
-
+	QObject::connect(mOffset.get(), SIGNAL(valueChanged()), this, SLOT(reinitializeKernelSGD()));
+	QObject::connect(mLambda.get(), SIGNAL(valueChanged()), this, SLOT(reinitializeKernelSGD()));
+	QObject::connect(mEpochs.get(), SIGNAL(valueChanged()), this, SLOT(reinitializeKernelSGD()));
+	
 	// TODO: parameter of source changes
 	
 	// make sure that we initialize a kernel SGD
 	
-	input->setCheck(cedar::proc::typecheck::IsMatrix());
+//	input->setCheck(cedar::proc::typecheck::IsMatrix());
 }
 
 
 
 void cShark::KernelSGD::reinitializeKernelSGD() 
 {
-	cedar::aux::LogSingleton::getInstance()->debugMessage ("Reinitializing Kernel SGD..");
-
+	cedar::aux::LogSingleton::getInstance()->message("Reinitializing Kernel SGD..", "SharkKernelSGDOnlineTrainer");
+	
 	// TODO: recreate kernel, loss etc
 		
 	// remove old trainer
@@ -113,42 +109,45 @@ void cShark::KernelSGD::reinitializeKernelSGD()
 
 void cShark::KernelSGD::inputConnectionChanged(const std::string& inputName)
 {
-  // TODO: you may want to replace this code by using a cedar::proc::InputSlotHelper
+	// TODO: you may want to replace this code by using a cedar::proc::InputSlotHelper
 
-  // Again, let's first make sure that this is really the input in case anyone ever changes our interface.
-  CEDAR_DEBUG_ASSERT(inputName == "input");
+	// Again, let's first make sure that this is really the input in case anyone ever changes our interface.
+	cedar::aux::LogSingleton::getInstance()->message("Input Connection Changed..", "SharkKernelSGDOnlineTrainer");
+	CEDAR_DEBUG_ASSERT(inputName == "input");
 
-  // Assign the input to the member. This saves us from casting in every computation step.
-  this->mInput = boost::dynamic_pointer_cast<const cedar::aux::MatData>(this->getInput(inputName));
+	// Assign the input to the member. This saves us from casting in every computation step.
+	//	this->mInput = boost::dynamic_pointer_cast<ConstCedarRealVectorPtr>(this->getInput(inputName));
+	//	this->mInput = boost::dynamic_pointer_cast<ConstCedarRealVectorPtr>(this->getInput(inputName));
+	
+	
+	bool output_changed = false;
+	if (!this->mInput)
+	{
+		// no input -> no output
+		//    this->mOutput->setData(cv::Mat());
+		output_changed = true;
+	}
+	else
+	{
+		// Let's get a reference to the input matrix.
+		const CedarRealVector& input = this->mInput->getData();
 
-  bool output_changed = false;
-  if (!this->mInput)
-  {
-    // no input -> no output
-    this->mOutput->setData(cv::Mat());
-    output_changed = true;
-  }
-  else
-  {
-    // Let's get a reference to the input matrix.
-    const cv::Mat& input = this->mInput->getData();
+		// check if the input is different from the output
+		//    if (input.type() != this->mOutput->getData().type() || input.size != this->mOutput->getData().size)
+		{
+			output_changed = true;
+		}
 
-    // check if the input is different from the output
-    if (input.type() != this->mOutput->getData().type() || input.size != this->mOutput->getData().size)
-    {
-      output_changed = true;
-    }
+		// Make a copy to create a matrix of the same type, dimensions, ...
+		//this->mOutput->setData(input.clone());
 
-    // Make a copy to create a matrix of the same type, dimensions, ...
-    this->mOutput->setData(input.clone());
+		//this->mOutput->copyAnnotationsFrom(this->mInput);
+	}
 
-    this->mOutput->copyAnnotationsFrom(this->mInput);
-  }
-
-  if (output_changed)
-  {
-    this->emitOutputPropertiesChangedSignal("output");
-  }
+	if (output_changed)
+	{
+		this->emitOutputPropertiesChangedSignal("output");
+	}
 }
 
 
@@ -156,5 +155,6 @@ void cShark::KernelSGD::inputConnectionChanged(const std::string& inputName)
 void cShark::KernelSGD::compute(const cedar::proc::Arguments& arguments)
 {
 	// go one step in the initialized kernelsgd object
-	mKernelSGDTrainer	-> oneStep ();
+	RealVector v = this->mInput->getData();
+	mKernelSGDTrainer	-> oneStep (v);
 }

@@ -68,6 +68,9 @@ using namespace shark;
  */
 class cShark::KernelSGD : public cedar::proc::Step
 {
+	Q_OBJECT
+	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
+	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 	
   //--------------------------------------------------------------------------------------------------------------------
   // nested types
@@ -94,26 +97,24 @@ protected:
 
 
 private:
-	
-	void reinitializeKernelSGD();
-	
-	
+		
 	void inputConnectionChanged(const std::string& inputName);
-
 	
 	void compute(const cedar::proc::Arguments& arguments);
 
-  //--------------------------------------------------------------------------------------------------------------------
-  // members
-  //--------------------------------------------------------------------------------------------------------------------
+public slots: 
+	void reinitializeKernelSGD();
+	
+	
+
 protected:
   // none yet
 private:
-  //!@brief MatrixData representing the input. Storing it like this saves time during computation.
-  cedar::aux::ConstMatDataPtr mInput;
+	//!@brief MatrixData representing the input. Storing it like this saves time during computation.
+	CedarRealVectorPtr mInput;
 
-  //!@brief The output data.
-  cedar::aux::MatDataPtr mOutput;
+	//!@brief The output data.
+	CedarRealVectorPtr mOutput;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
