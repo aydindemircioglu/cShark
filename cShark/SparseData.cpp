@@ -48,15 +48,9 @@
 using namespace shark;
 
 
-//----------------------------------------------------------------------------------------------------------------------
-// constructors and destructor
-//----------------------------------------------------------------------------------------------------------------------
-
-cShark::SparseData::SparseData()
-:
-// outputs
-mOutput(new cedar::aux::MatData(cv::Mat())),
-mFilename(new cedar::aux::FileParameter(this, "Filename", cedar::aux::FileParameter::READ, "none"))
+cShark::SparseData::SparseData():
+	mOutput(new CedarRealVector()),
+	mFilename(new cedar::aux::FileParameter(this, "Filename", cedar::aux::FileParameter::READ, "none"))
 {
 	// declare all data
 	cedar::proc::DataSlotPtr input = this->declareInput("input");
@@ -65,61 +59,57 @@ mFilename(new cedar::aux::FileParameter(this, "Filename", cedar::aux::FileParame
 	// do all connections
 	QObject::connect(mFilename.get(), SIGNAL(valueChanged()), this, SLOT(updateFilename()));
   
-	input->setCheck(cedar::proc::typecheck::IsMatrix());
+//	input->setCheck(cedar::proc::typecheck::IsMatrix());
 }
 
 
 
-void cShark::SparseData::updateFilename () 
+void cShark::SparseData::updateFilename() 
 {
 	cedar::aux::LogSingleton::getInstance()->debugMessage ("Changing file name of data..");
 
-	// a learning machine has data
-	LabeledData<RealVector, unsigned int> trainingData;
-	
-	// the data has some labeling order  we also need to consider
-	LabelOrder labelOrder;
-
 	// change filename
 	std::string trainingDataPath = mFilename->getPath();
-	trainingData = sparseDataHandler.importData(trainingDataPath, labelOrder);
+	mTrainingData = sparseDataHandler.importData (trainingDataPath, mLabelOrder);
+	
+	// pointer where we are currently
+	mCurrentPoint = 0;
 }
 
 
 
 void cShark::SparseData::inputConnectionChanged(const std::string& inputName)
 {
-  // TODO: you may want to replace this code by using a cedar::proc::InputSlotHelper
+	// TODO: you may want to replace this code by using a cedar::proc::InputSlotHelper
 
-  // Again, let's first make sure that this is really the input in case anyone ever changes our interface.
-  CEDAR_DEBUG_ASSERT(inputName == "input");
+	// Again, let's first make sure that this is really the input in case anyone ever changes our interface.
+	CEDAR_DEBUG_ASSERT(inputName == "input");
 
-  // Assign the input to the member. This saves us from casting in every computation step.
-  this->mInput = boost::dynamic_pointer_cast<const cedar::aux::MatData>(this->getInput(inputName));
+	// Assign the input to the member. This saves us from casting in every computation step.
+	this->mInput = boost::dynamic_pointer_cast<const cedar::aux::MatData>(this->getInput(inputName));
 
-  bool output_changed = false;
-  if (!this->mInput)
-  {
-    // no input -> no output
-    this->mOutput->setData(cv::Mat());
-    output_changed = true;
-  }
-  else
-  {
-    // Let's get a reference to the input matrix.
-    const cv::Mat& input = this->mInput->getData();
+	bool output_changed = false;
+	if (!this->mInput)
+	{
+		// no input -> no output
+		this->mOutput->setData(*(new const RealVector()));
+		output_changed = true;
+	}
+	else
+	{
+		// Let's get a reference to the input matrix.
+		const cv::Mat& input = this->mInput->getData();
 
-    // check if the input is different from the output
-    if (input.type() != this->mOutput->getData().type() || input.size != this->mOutput->getData().size)
-    {
-      output_changed = true;
-    }
+		// check if the input is different from the output
+// 		if (input.type() != this->mOutput->getData().type() || input.size != this->mOutput->getData().size)	{
+// 			output_changed = true;
+// 		}
 
-    // Make a copy to create a matrix of the same type, dimensions, ...
-    this->mOutput->setData(input.clone());
+		// Make a copy to create a matrix of the same type, dimensions, ...
+//		this->mOutput->setData(input.clone());
 
-    this->mOutput->copyAnnotationsFrom(this->mInput);
-  }
+	//	this->mOutput->copyAnnotationsFrom(this->mInput);
+	}
 
   if (output_changed)
   {
@@ -127,7 +117,20 @@ void cShark::SparseData::inputConnectionChanged(const std::string& inputName)
   }
 }
 
+
+
 void cShark::SparseData::compute(const cedar::proc::Arguments& arguments)
 {
   // TODO: something
+	RealVector dataPoint = mTrainingData.inputs().element (mCurrentPoint);
+	CedarRealVector dp (dataPoint);
+	this->mOutput = CedarRealVectorPtr (&dp);
+
+	mCurrentPoint++;
+	if (mCurrentPoint >= mTrainingData.numberOfElements()) {
+		mCurrentPoint = 0;
+	}
+	
 }
+
+

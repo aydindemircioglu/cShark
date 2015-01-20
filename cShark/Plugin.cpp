@@ -79,7 +79,7 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
 		)
 	);
 	KernelSGDDeclaration->setDescription("Kernel SGD (bad hack).");
-	plugin->add(SparseDataDeclaration);
+	plugin->add(KernelSGDDeclaration);
 	
 }
 

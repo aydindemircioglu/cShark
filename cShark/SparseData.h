@@ -58,13 +58,17 @@
 
 using namespace shark;
 
+
 /*!@todo describe.
  *
  * @todo describe more.
  */
 class cShark::SparseData : public cedar::proc::Step
 {
-  //--------------------------------------------------------------------------------------------------------------------
+	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
+	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
+	
+	//--------------------------------------------------------------------------------------------------------------------
   // nested types
   //--------------------------------------------------------------------------------------------------------------------
 
@@ -108,7 +112,7 @@ private:
   cedar::aux::ConstMatDataPtr mInput;
 
   //!@brief The output data.
-  cedar::aux::MatDataPtr mOutput;
+  CedarRealVectorPtr  mOutput;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
@@ -122,7 +126,15 @@ private:
 
 	//!@brief determines the filename from which currently is read
 	cedar::aux::FileParameterPtr mFilename;
+
+	//!@brief where are we in the file?
+	size_t mCurrentPoint;
+
+	// a learning machine has data
+	LabeledData<RealVector, unsigned int> mTrainingData;
 	
+	// the data has some labeling order  we also need to consider
+	LabelOrder mLabelOrder;
 	
 }; // class cShark::SparseData
 
