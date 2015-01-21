@@ -50,7 +50,7 @@
 #include <cedar/auxiliaries/MatData.h>
 
 // SHARK THINGS
-#include "SharkKernelSGDOnlineTrainer.h"
+#include "SharkSVM/SharkKernelSGDOnlineTrainer.h"
 #include <shark/ObjectiveFunctions/Loss/HingeLoss.h>
 #include <shark/Models/Kernels/GaussianRbfKernel.h> //the used kernel for the SVM
 

@@ -63,6 +63,51 @@ namespace shark {
             };
     };
 
+    ///! different svm solvers we support
+    /// the numbers translate directly to the command line options,
+    /// so pegasos is activated by -s 11
+    ///
+    class SVMTypes {
+        public:
+            enum _SVMTypes {CSVC = 0, 
+                            Pegasos = 11, 
+                            BSGD = 12, 
+                            CPA = 13, 
+                            RandomFourierFeatures = 14,
+                            Nystrom = 15, 
+                            Fastfood = 16,
+                            IncompleteCholesky = 17,
+                            LIBLINEAR = 18, 
+                            ACF = 19,
+                            SVRG = 20,
+                            DCSVM = 21,
+                            MCSVMOVA = 100,
+                            MCSVMCS = 101,
+                            MCSVMWW = 102,
+                            MCSVMLLW = 103,
+                            MCSVMMMR = 104,
+                            MCSVMADM = 105,
+                            MCSVMATM = 106,
+                            MCSVMATS = 107,
+                            LARANK = 108,
+                            // internal
+                            LLSVM = 2098621
+            };
+    };
+
+
+    ///! flavors for solvers
+    /// as some methods have different 'flavors', i.e. ways to
+    /// achieve something, we have here a list of them, e.g.
+    /// the linear svm solver can either mimic liblinear or acf,
+    /// and this is used by e.g. nystrom as a classifier. 
+    ///
+    class SVMFlavors {
+        public:
+            enum _SVMFlavors {
+                LIBLINEAR = 0, ACF = 1
+            };
+    };
 
 
     ///! usable kernels.

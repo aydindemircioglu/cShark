@@ -32,9 +32,6 @@
  */
 //===========================================================================
 
-// WTF??
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-
 
 #include <shark/Data/Dataset.h>
 #include <shark/Data/Libsvm.h>
@@ -191,12 +188,13 @@ namespace shark {
 
             // FIXME: does only read one alpha..
             LibSVMPoint newPoint;
-            bool r = phrase_parse (
-                         first, last,
-                         *(double_ >> !(lit(':') >> double_) ) 
-                         >> *(uint_ >> ':' >> double_) >> *char_ >> * ('#' >> char_),
-                         space , newPoint
-                     );
+            bool r = true; 
+// 			phrase_parse (
+//                          first, last,
+//                          *(double_ >> !(lit(':') >> double_) ) 
+//                          >> *(uint_ >> ':' >> double_) >> *char_ >> * ('#' >> char_),
+//                          qi::space , newPoint
+//                      );
 
             if (!r || first != last) {
                 bool lineOK = false;

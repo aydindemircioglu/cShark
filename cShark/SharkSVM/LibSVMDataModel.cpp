@@ -39,6 +39,10 @@
 
 #include "SharkSVM.h"
 
+// !!!!!!!!!!!!! IMPORT ORDER IS IMPORTANT HERE !!!!
+#include <QObject>
+#include <boost/foreach.hpp>
+
 #ifndef REPLACE_BOOST_LOG
 #include <boost/log/core.hpp>
 #include <boost/log/expressions.hpp>

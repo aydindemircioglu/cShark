@@ -48,7 +48,7 @@
 #include <cedar/auxiliaries/MatData.h>
 
 // SHARK THINGS
-#include "LIBSVMModelWriter.h"
+#include "SharkSVM/LibSVMDataModel.h"
 
 // FORWARD DECLARATIONS
 #include "LIBSVMModelWriter.fwd.h"
@@ -112,8 +112,8 @@ protected:
   // none yet
 private:
   //!@brief MatrixData representing the input. Storing it like this saves time during computation.
-  cedar::aux::ConstMatDataPtr mInput;
-
+	CedarRealVectorPtr mInput;
+	
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters

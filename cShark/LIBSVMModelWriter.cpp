@@ -69,10 +69,8 @@ void cShark::LIBSVMModelWriter::updateFilename()
 
 	// change filename
 	std::string trainingDataPath = mFilename->getPath();
-	mTrainingData = sparseDataHandler.importData (trainingDataPath, mLabelOrder);
-	
-	// pointer where we are currently
-	mCurrentPoint = 0;
+
+	// what else?
 }
 
 
@@ -84,8 +82,6 @@ void cShark::LIBSVMModelWriter::inputConnectionChanged(const std::string& inputN
 	// Again, let's first make sure that this is really the input in case anyone ever changes our interface.
 	CEDAR_DEBUG_ASSERT(inputName == "input");
 
-	// Assign the input to the member. This saves us from casting in every computation step.
-	this->mInput = boost::dynamic_pointer_cast<const cedar::aux::MatData>(this->getInput(inputName));
 
 	bool output_changed = false;
 

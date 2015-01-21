@@ -48,7 +48,7 @@
 #include <cedar/auxiliaries/MatData.h>
 
 // SHARK THINGS
-#include "SharkSparseData.h"
+#include "SharkSVM/SharkSparseData.h"
 
 // FORWARD DECLARATIONS
 #include "SparseData.fwd.h"
