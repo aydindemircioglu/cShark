@@ -47,6 +47,7 @@
 
 #include "SparseData.h"
 #include "KernelSGD.h"
+#include "LIBSVMModelWriter.h"
 
 
 using namespace cShark;
@@ -80,5 +81,21 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
 	);
 	KernelSGDDeclaration->setDescription("Kernel SGD (bad hack).");
 	plugin->add(KernelSGDDeclaration);
+	
+	
+	
+	cedar::proc::ElementDeclarationPtr LIBSVMModelWriterDeclaration
+	(
+		new cedar::proc::ElementDeclarationTemplate
+		<
+		LIBSVMModelWriter
+		>
+		(
+			"cShark"
+		)
+	);
+	LIBSVMModelWriterDeclaration->setDescription("LIBSVM Model Writer (bad hack).");
+	plugin->add(LIBSVMModelWriterDeclaration);
+	
 }
 

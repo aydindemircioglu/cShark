@@ -42,7 +42,6 @@
 
 // CEDAR INCLUDES
 #include <cedar/processing/Step.h>
-#include <cedar/processing/InputSlotHelper.h>
 
 #include <cedar/auxiliaries/FileParameter.h>
 #include <cedar/auxiliaries/MatData.h>
@@ -94,10 +93,7 @@ protected:
 
 
 private:	
-	
-	void inputConnectionChanged(const std::string& inputName);
-
-	
+		
 	void compute(const cedar::proc::Arguments& arguments);
 
 
@@ -111,8 +107,6 @@ public slots:
 protected:
   // none yet
 private:
-  //!@brief MatrixData representing the input. Storing it like this saves time during computation.
-  cedar::aux::ConstMatDataPtr mInput;
 
   //!@brief The output data.
   CedarRealVectorPtr  mOutput;

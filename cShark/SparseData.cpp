@@ -53,7 +53,6 @@ cShark::SparseData::SparseData():
 	mFilename(new cedar::aux::FileParameter(this, "Filename", cedar::aux::FileParameter::READ, "none"))
 {
 	// declare all data
-	cedar::proc::DataSlotPtr input = this->declareInput("input");
 	this->declareOutput("output", mOutput);
 
 	// do all connections
@@ -74,47 +73,6 @@ void cShark::SparseData::updateFilename()
 	
 	// pointer where we are currently
 	mCurrentPoint = 0;
-}
-
-
-
-void cShark::SparseData::inputConnectionChanged(const std::string& inputName)
-{
-	// TODO: you may want to replace this code by using a cedar::proc::InputSlotHelper
-
-	// Again, let's first make sure that this is really the input in case anyone ever changes our interface.
-	CEDAR_DEBUG_ASSERT(inputName == "input");
-
-	// Assign the input to the member. This saves us from casting in every computation step.
-	this->mInput = boost::dynamic_pointer_cast<const cedar::aux::MatData>(this->getInput(inputName));
-
-	bool output_changed = false;
-	if (!this->mInput)
-	{
-		// no input -> no output
-		this->mOutput->setData(*(new const RealVector()));
-		output_changed = true;
-	}
-	else
-	{
-		// Let's get a reference to the input matrix.
-		const cv::Mat& input = this->mInput->getData();
-
-		// check if the input is different from the output
-// 		if (input.type() != this->mOutput->getData().type() || input.size != this->mOutput->getData().size)	{
-// 			output_changed = true;
-// 		}
-
-		// Make a copy to create a matrix of the same type, dimensions, ...
-//		this->mOutput->setData(input.clone());
-
-	//	this->mOutput->copyAnnotationsFrom(this->mInput);
-	}
-
-  if (output_changed)
-  {
-    this->emitOutputPropertiesChangedSignal("output");
-  }
 }
 
 

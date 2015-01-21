@@ -59,7 +59,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fno-strict-aliasing")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl -subsystem,console,debug")
 
 find_package (Shark REQUIRED)
-find_package (Boost COMPONENTS filesystem program_options regex serialization system thread unit_test_framework REQUIRED)
+find_package (Boost COMPONENTS filesystem log program_options regex serialization system thread unit_test_framework REQUIRED)
 
 target_link_libraries (cShark ${Boost_LIBRARIES}  ${SHARK_LIBRARIES})
 
