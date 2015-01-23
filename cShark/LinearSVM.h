@@ -49,6 +49,9 @@
 #include <cedar/auxiliaries/IntParameter.h>
 #include <cedar/auxiliaries/MatData.h>
 
+// CSHARK
+#include "cShark.h"
+
 // SHARK THINGS
 #include <shark/ObjectiveFunctions/Loss/HingeLoss.h>
 #include <shark/Algorithms/Trainers/CSvmTrainer.h> // the C-SVM trainer
@@ -142,8 +145,6 @@ public:
 class cShark::LinearSVM : public cedar::proc::Step
 {
 	Q_OBJECT
-	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
-	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 	
   //--------------------------------------------------------------------------------------------------------------------
   // nested types

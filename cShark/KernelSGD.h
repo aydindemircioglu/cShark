@@ -49,6 +49,9 @@
 #include <cedar/auxiliaries/IntParameter.h>
 #include <cedar/auxiliaries/MatData.h>
 
+// CSHARK
+#include "cShark.h"
+
 // SHARK THINGS
 #include "SharkSVM/SharkKernelSGDOnlineTrainer.h"
 #include <shark/ObjectiveFunctions/Loss/HingeLoss.h>
@@ -69,8 +72,6 @@ using namespace shark;
 class cShark::KernelSGD : public cedar::proc::Step
 {
 	Q_OBJECT
-	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
-	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 	
   //--------------------------------------------------------------------------------------------------------------------
   // nested types

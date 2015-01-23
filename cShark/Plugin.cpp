@@ -45,9 +45,10 @@
 #include <cedar/processing/ElementDeclaration.h>
 
 
-#include "SparseData.h"
 #include "KernelSGD.h"
 #include "LIBSVMModelWriter.h"
+#include "LinearSVM.h"
+#include "SparseData.h"
 
 
 using namespace cShark;
@@ -81,6 +82,20 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
 	);
 	KernelSGDDeclaration->setDescription("Kernel SGD (bad hack).");
 	plugin->add(KernelSGDDeclaration);
+	
+	
+	cedar::proc::ElementDeclarationPtr LinearSVMDeclaration
+	(
+		new cedar::proc::ElementDeclarationTemplate
+		<
+		LinearSVM
+		>
+		(
+			"cShark"
+		)
+	);
+	LinearSVMDeclaration->setDescription("Linear SVM (bad hack).");
+	plugin->add(LinearSVMDeclaration);
 	
 	
 	

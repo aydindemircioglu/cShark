@@ -46,6 +46,9 @@
 #include <cedar/auxiliaries/FileParameter.h>
 #include <cedar/auxiliaries/MatData.h>
 
+// CSHARK
+#include "cShark.h"
+
 // SHARK THINGS
 #include "SharkSVM/SharkSparseData.h"
 
@@ -65,8 +68,6 @@ using namespace shark;
 class cShark::SparseData : public cedar::proc::Step
 {
 	Q_OBJECT
-	typedef cedar::aux::DataTemplate<RealVector> CedarRealVector;
-	CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 	
 	//--------------------------------------------------------------------------------------------------------------------
   // nested types
