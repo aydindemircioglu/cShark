@@ -37,17 +37,27 @@
 #ifndef C_SHARK_H
 #define C_SHARK_H
 
-#include <shark/Core/Shark.h>
-#include <shark/Core/Math.h>
-#include <shark/Data/Dataset.h>
+#include "SharkSVM/LabelOrder.h"
 
 using namespace shark;
 
-typedef cedar::aux::DataTemplate<shark::RealVector> SharkRealVector;
-CEDAR_GENERATE_POINTER_TYPES(SharkRealVector);
+typedef cedar::aux::DataTemplate<shark::RealVector> CedarRealVector;
+CEDAR_GENERATE_POINTER_TYPES(CedarRealVector);
 
-typedef cedar::aux::DataTemplate<shark::Dataset> SharkDataset;
-CEDAR_GENERATE_POINTER_TYPES(SharkDataset);
+typedef shark::LabeledData<shark::RealVector, unsigned int> SharkSVMData;
+typedef cedar::aux::DataTemplate<SharkSVMData> CedarSVMData;
+CEDAR_GENERATE_POINTER_TYPES(CedarSVMData);
+
+typedef cedar::aux::DataTemplate<shark::Data<shark::RealVector> > CedarDataRealVector;
+CEDAR_GENERATE_POINTER_TYPES(CedarDataRealVector);
+
+typedef cedar::aux::DataTemplate<shark::RealMatrix> CedarRealMatrix;
+CEDAR_GENERATE_POINTER_TYPES(CedarRealMatrix);
+
+typedef cedar::aux::DataTemplate<LabelOrder> CedarLabelOrder;
+CEDAR_GENERATE_POINTER_TYPES(CedarLabelOrder);
+
+
 
 #endif // C_SHARK_H
 
